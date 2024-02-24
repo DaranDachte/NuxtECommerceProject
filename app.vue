@@ -4,8 +4,6 @@
   </NuxtLayout>
 </template>
 
-<style>
-@import "bulma//css/bulma.min.css";
-</style>
+<style></style>
 
 <script setup></script>

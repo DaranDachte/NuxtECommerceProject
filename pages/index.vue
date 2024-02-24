@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="is-flex"><Categories /> <Cards /></div>
+    <Carousel />
+    <div class="flex mt-10"><Categories /> <Cards /></div>
 
     <Footer />
   </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="card-style" v-for="card in 5"><DetailCard /></div>
+  <div class="card-style" v-for="card in 4"><DetailCard /></div>
 </template>
 
 <style>
