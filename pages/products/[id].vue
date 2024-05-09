@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{{ productId }} Samsung Galaxy</h1>
+    <h1>{{ id }} Samsung Galaxy</h1>
   </div>
 </template>
 
@@ -9,5 +9,5 @@ import { useRouter, useRoute } from "vue-router";
 
 const route = useRoute();
 const router = useRouter();
-const id = route.params.id;
+const id = 1; //route.params.id;
 </script>
