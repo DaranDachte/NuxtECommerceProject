@@ -2,7 +2,5 @@
   <div>
     <Carousel />
     <CatalogBody />
-
-    <Footer />
   </div>
 </template>
