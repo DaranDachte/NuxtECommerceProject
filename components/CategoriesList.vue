@@ -1,7 +1,7 @@
 <template>
   <template>
     <div>
-      <div class="flex flex-col items-center w-[10rem]">
+      <div class="flex flex-col items-center w-[12rem]">
         <h1 class="mb-5">Categories</h1>
         <ul
           class="max-w-md space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400"
