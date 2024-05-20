@@ -110,29 +110,45 @@
         later. Maybe the price becomes more affordable, maybe you want to see
         the details of the item again.
       </p>
-      <NuxtLink
-        to="/"
-        class="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
-      >
-        <Icon name="i-heroicons-solid:heart" /> &nbsp; Go to wish list
-      </NuxtLink>
+      <div class="flex justify-between">
+        <button
+          @click="wishListStore.addToWishList(product)"
+          class="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+        >
+          <Icon name="i-heroicons-solid:heart" /> &nbsp; Add to wish list
+        </button>
+
+        <NuxtLink
+          to="/wishlist"
+          class="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+        >
+          <Icon name="i-heroicons-solid:heart" /> &nbsp; Go to wish list
+        </NuxtLink>
+      </div>
     </div>
+  </div>
+  <div class="relative">
+    <UAlert
+      v-if="wishListStore.showAlert"
+      description="You have already added this item to your wish list."
+      title="Heads up!"
+      class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[25rem] h-[5rem] bg-gradient-to-r from-red-200 to-red-600"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import { useCategoriesStore } from "../../store/categoriesStore";
+import { useWishListStore } from "../../store/wishListStore";
 
 const categoriesStore = useCategoriesStore();
-
+const wishListStore = useWishListStore();
 const route = useRoute();
 const productId = route.params.id;
-
 const capitalizeFirstLetter = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
-
 interface Product {
   id: number;
   title: string;
@@ -151,5 +167,6 @@ interface Product {
 const product: Product | undefined = categoriesStore.products.find(
   (product: Product) => product.id === Number(productId)
 );
+
 const items = (product as unknown as Product)?.images || [];
 </script>
