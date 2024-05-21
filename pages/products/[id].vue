@@ -44,7 +44,7 @@
           arrows
           class="w-64 mx-auto"
         >
-          <img :src="item" class="w-full" draggable="false" />
+          <img :src="item" class="w-full max-h-60 max-w-80" draggable="false" />
         </UCarousel>
       </div>
       <div class="mb-3 text-xl font-bold text-gray-700 dark:text-gray-400">

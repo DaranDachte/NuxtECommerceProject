@@ -6,6 +6,7 @@ export const useWishListStore = defineStore("wishListStore", () => {
   const showAlert = ref(false);
   const removeFromWishList = (product: any) => {
     wishList.value = wishList.value.filter((wish) => wish !== product); // Присваиваем новое значение отфильтрованного массива
+    console.log(wishList.value);
   };
 
   const addToWishList = (product: any) => {
