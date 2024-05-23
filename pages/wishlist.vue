@@ -63,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import { useWishListStore } from "../store/wishListStore.ts";
+import { useWishListStore } from "../store/wishListStore";
 import { useRoute } from "vue-router";
 const route = useRoute();
 const productId = route.params.id;

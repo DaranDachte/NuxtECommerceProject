@@ -46,7 +46,11 @@
         </UChip>
       </NuxtLink>
       <NuxtLink to="/basket">
-        <UChip text="3" size="2xl">
+        <UChip
+          :text="basketText"
+          size="2xl"
+          :show="basketStore.basket.length > 0"
+        >
           <UButton icon="i-heroicons-shopping-cart" color="red" />
         </UChip>
       </NuxtLink>
@@ -56,9 +60,12 @@
 
 <script setup lang="ts">
 import { useWishListStore } from "../store/wishListStore";
+import { useBasketStore } from "~/store/basketStore";
 import { computed } from "vue"; // Импортируем computed из Vue
 
 const wishListStore = useWishListStore();
+const basketStore = useBasketStore();
 
 const text = computed(() => wishListStore.wishList.length);
+const basketText = computed(() => basketStore.basket.length);
 </script>
