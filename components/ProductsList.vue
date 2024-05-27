@@ -1,7 +1,10 @@
 <template>
   <div>
     <!-- Используем условный рендеринг с v-if и v-else -->
-    <div v-if="products.length > 0" class="flex">
+    <div
+      v-if="products.length > 0"
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
+    >
       <!-- Используем v-for для создания ProductCard для каждого продукта -->
       <ProductCard
         v-for="product in products"
