@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import { ref } from "vue";
 
 export const useCategoriesStore = defineStore("categoriesStore", () => {
   const categories = ref([]);
@@ -13,14 +12,14 @@ export const useCategoriesStore = defineStore("categoriesStore", () => {
       const { data: categoriesFromAPI } = await axios.get(
         "https://dummyjson.com/products/categories"
       );
+      // Убедитесь, что вы сохраняете данные в нужном формате
       categories.value = categoriesFromAPI;
-      activeCategory.value = categoriesFromAPI[0];
-      const { data: productsFromAPI } = await axios.get(
-        `https://dummyjson.com/products/category/${categoriesFromAPI[0]}`
-      );
-      console.log("Products from API:", productsFromAPI);
-      products.value = productsFromAPI.products;
+      activeCategory.value = categoriesFromAPI[0]?.slug; // Используем slug
       error.value = "";
+      // Получаем продукты для первой категории
+      if (activeCategory.value) {
+        await fetchProductsByCategory(activeCategory.value);
+      }
     } catch (err) {
       error.value = "Error fetching data";
       categories.value = [];
@@ -28,22 +27,25 @@ export const useCategoriesStore = defineStore("categoriesStore", () => {
     }
   };
 
-  fetchCategories();
-
-  const onCategoryClick = async (category: string) => {
-    activeCategory.value = category;
+  const fetchProductsByCategory = async (categorySlug: string) => {
     try {
       const { data: productsFromAPI } = await axios.get(
-        `https://dummyjson.com/products/category/${category}`
+        `https://dummyjson.com/products/category/${categorySlug}`
       );
-      console.log("Products from API after click:", productsFromAPI);
       products.value = productsFromAPI.products;
+      error.value = "";
     } catch (err) {
-      error.value = "Something is wrong!";
-      categories.value = [];
+      error.value = "Error fetching products";
       products.value = [];
     }
   };
+
+  const onCategoryClick = async (categorySlug: string) => {
+    activeCategory.value = categorySlug;
+    await fetchProductsByCategory(categorySlug);
+  };
+
+  fetchCategories();
 
   return { categories, activeCategory, products, error, onCategoryClick };
 });
