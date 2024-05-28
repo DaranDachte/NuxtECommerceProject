@@ -32,6 +32,7 @@ export const useCategoriesStore = defineStore("categoriesStore", () => {
       const { data: productsFromAPI } = await axios.get(
         `https://dummyjson.com/products/category/${categorySlug}`
       );
+      console.log("Products from API:", productsFromAPI);
       products.value = productsFromAPI.products;
       error.value = "";
     } catch (err) {
