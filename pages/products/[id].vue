@@ -1,7 +1,7 @@
 <template>
-  <div class="grid grid-cols-4 gap-x-2 px-4 w-full h-[80vh]">
+  <div class="grid grid-cols-4 mt-5 gap-x-2 px-4 w-full">
     <div
-      class="col-span-1 p-4 mt-10 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col justify-between"
+      class="col-span-1 p-4 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col justify-between"
     >
       <p
         class="mb-3 text-xl font-bold text-gray-700 dark:text-gray-400 leading-10"
@@ -21,7 +21,7 @@
       </NuxtLink>
     </div>
     <div
-      class="col-span-2 p-4 mt-10 mx-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col justify-between"
+      class="col-span-2 flex-grow p-4 mx-auto border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col justify-between"
     >
       <div>
         <UCarousel
@@ -42,9 +42,9 @@
             class: '-right-12',
           }"
           arrows
-          class="w-64 mx-auto"
+          class="w-[25rem] mx-auto"
         >
-          <img :src="item" class="w-full max-h-60 max-w-80" draggable="false" />
+          <img :src="item" class="max-h-[25rem]" draggable="false" />
         </UCarousel>
       </div>
       <div class="mb-3 text-xl font-bold text-gray-700 dark:text-gray-400">
@@ -68,7 +68,6 @@
           />&nbsp;Product Name:
           {{ product?.brand }}
         </p>
-
         <p class="flex items-center">
           <Icon name="i-heroicons-solid:home" color="#604FB5" />&nbsp;In stock:
           {{ product?.stock }}
@@ -81,6 +80,20 @@
           <Icon name="i-subway:star" color="#FFD700" />&nbsp;Rating:
           {{ product?.rating }}
         </p>
+        <p class="flex items-center">
+          <Icon name="i-grommet-icons:task" color="#1714AD" /> &nbsp; Size: W:
+          {{ product?.dimensions.width }} x H:
+          {{ product?.dimensions.height }} x D:
+          {{ product?.dimensions.depth }}
+        </p>
+        <p class="flex items-center">
+          <Icon
+            name="i-heroicons-solid:arrow-left-on-rectangle"
+            color="#1473AD"
+          />
+          &nbsp; Return policy: {{ product?.returnPolicy }}
+        </p>
+
         <p>Description: {{ product?.description }}</p>
       </div>
 
@@ -100,30 +113,36 @@
         </NuxtLink>
       </div>
     </div>
-    <div
-      class="col-span-1 p-4 max-w-xl mt-10 mx-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col justify-between"
-    >
-      <p
-        class="mb-3 text-xl font-bold text-gray-700 dark:text-gray-400 leading-10"
-      >
-        You can add your favorite item to your wish list and come back to it
-        later. Maybe the price becomes more affordable, maybe you want to see
-        the details of the item again.
-      </p>
-      <div class="flex justify-between">
-        <button
-          @click="wishListStore.addToWishList(product)"
-          class="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
-        >
-          <Icon name="i-heroicons-solid:heart" /> &nbsp; Add to wish list
-        </button>
 
-        <NuxtLink
-          to="/wishlist"
-          class="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+    <div
+      class="col-span-1 flex-grow p-4 max-w-xl mx-auto border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col justify-between"
+    >
+      <div>
+        <p
+          class="mb-3 text-xl font-bold text-gray-700 dark:text-gray-400 leading-10"
         >
-          <Icon name="i-heroicons-solid:heart" /> &nbsp; Go to wish list
-        </NuxtLink>
+          You can add your favorite item to your wish list and come back to it
+          later. Maybe the price becomes more affordable, maybe you want to see
+          the details of the item again.
+        </p>
+        <div class="flex justify-between">
+          <button
+            @click="wishListStore.addToWishList(product)"
+            class="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+          >
+            <Icon name="i-heroicons-solid:heart" /> &nbsp; Add to wish list
+          </button>
+
+          <NuxtLink
+            to="/wishlist"
+            class="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+          >
+            <Icon name="i-heroicons-solid:heart" /> &nbsp; Go to wish list
+          </NuxtLink>
+        </div>
+      </div>
+      <div class="flex flex-col">
+        <ReviewsList v-if="product?.id" :productId="product.id" />
       </div>
     </div>
   </div>
@@ -149,6 +168,12 @@ const productId = route.params.id;
 const capitalizeFirstLetter = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
+interface Dimensions {
+  width: number;
+  height: number;
+  depth: number;
+}
+
 interface Product {
   id: number;
   title: string;
@@ -161,6 +186,8 @@ interface Product {
   stock: number;
   images: string[];
   thumbnail: string;
+  returnPolicy: string;
+  dimensions: Dimensions;
 }
 
 // Получаем информацию о продукте из стора по его ID

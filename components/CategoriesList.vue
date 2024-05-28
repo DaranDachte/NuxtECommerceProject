@@ -11,7 +11,11 @@
           class="hover:cursor-pointer italic text-xl leading-10"
           :class="{ 'font-bold': category.slug === activeCategory }"
         >
-          <Icon name="i-svg-spinners:clock" color="#14A3AD" class="mr-2" />
+          <Icon
+            name="i-svg-spinners:blocks-wave"
+            color="#14A3AD"
+            class="mr-2"
+          />
           {{ category.name }}
         </li>
       </ul>
