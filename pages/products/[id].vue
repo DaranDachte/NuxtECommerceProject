@@ -69,8 +69,28 @@
           {{ product?.brand }}
         </p>
         <p class="flex items-center">
-          <Icon name="i-heroicons-solid:home" color="#604FB5" />&nbsp;In stock:
+          <Icon
+            name="i-ic:baseline-assignment-turned-in"
+            color="#9414AD"
+          />&nbsp; Stock status:
+          {{ product?.availabilityStatus }}
+        </p>
+        <p class="flex items-center">
+          <Icon name="i-heroicons-solid:home" color="#604FB5" />&nbsp;In stock
+          quantity:
           {{ product?.stock }}
+        </p>
+        <p class="flex items-center">
+          <Icon
+            name="i-ic:baseline-app-registration"
+            color="#14AD8F"
+          />&nbsp;Minimum order quantity:
+          {{ product?.minimumOrderQuantity }}
+        </p>
+        <p class="flex items-center">
+          <Icon name="i-ic:baseline-info" color="#14AD8F" />&nbsp;Shipping
+          Information:
+          {{ product?.shippingInformation }}
         </p>
         <p class="flex items-center">
           <Icon name="i-cryptocurrency-color:eur" />&nbsp;Price:
@@ -85,6 +105,11 @@
           {{ product?.dimensions.width }} x H:
           {{ product?.dimensions.height }} x D:
           {{ product?.dimensions.depth }}
+        </p>
+        <p class="flex items-center">
+          <Icon name="i-ic:twotone-line-weight" color="#849A96" /> &nbsp;
+          Weight:
+          {{ product?.weight }}
         </p>
         <p class="flex items-center">
           <Icon
@@ -146,6 +171,7 @@
       </div>
     </div>
   </div>
+
   <div class="relative">
     <UAlert
       v-if="wishListStore.showAlert"
@@ -188,6 +214,10 @@ interface Product {
   thumbnail: string;
   returnPolicy: string;
   dimensions: Dimensions;
+  availabilityStatus: string;
+  minimumOrderQuantity: number;
+  shippingInformation: string;
+  weight: number;
 }
 
 // Получаем информацию о продукте из стора по его ID
