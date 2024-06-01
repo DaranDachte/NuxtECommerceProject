@@ -2,11 +2,9 @@
   <div class="flex mt-1 gap-4 px-4 w-full">
     <!--   левая  колонка начало -->
     <div
-      class="basis-[15%] p-4 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col justify-between"
+      class="basis-[15%] p-4 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col"
     >
-      <p
-        class="mb-3 text-xl font-bold text-gray-700 dark:text-gray-400 leading-10"
-      >
+      <p class="mb-3 text-lg font-bold text-gray-700 dark:text-gray-400">
         Our store offers thousands of products at an affordable price. You can
         find from us everything according to your taste. If you have any
         suggestions - how we can improve our work, or you have not found the
@@ -14,12 +12,21 @@
         follow this link and send us a message. We will read it carefully and
         contact you if necessary.
       </p>
-      <NuxtLink
-        to="/contact"
-        class="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
-      >
-        <Icon name="i-ic:baseline-contact-mail" /> &nbsp; Go to contact page
-      </NuxtLink>
+      <div class="">
+        <NuxtLink
+          to="/contact"
+          class="flex items-center justify-center mb-5 rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+        >
+          <Icon name="i-ic:baseline-contact-mail" /> &nbsp; Go to contact page
+        </NuxtLink>
+        <NuxtLink
+          to="/"
+          class="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+        >
+          <Icon name="i-ic:baseline-keyboard-arrow-left" /> &nbsp; Back to
+          Catalog
+        </NuxtLink>
+      </div>
     </div>
 
     <!-- левая колонка конец -->
@@ -54,7 +61,7 @@
       </div>
 
       <div
-        class="flex flex-col shadow-2xl text-2xl p-5 align-center justify-between border border-solid border-gray-200 bg-white dark:bg-gray-800 rounded-xl font-bold text-gray-700 dark:text-gray-400"
+        class="flex flex-col shadow-2xl text-lg p-5 align-center justify-between border border-solid border-gray-200 bg-white dark:bg-gray-800 rounded-xl font-bold text-gray-700 dark:text-gray-400"
       >
         <div v-show="!expanded">
           <p class="flex items-center">
@@ -81,6 +88,12 @@
             />&nbsp;Product Name:
             {{ product?.brand }}
           </p>
+          <NuxtLink
+            href="#"
+            class="flex items-center w-[10rem] mt-5 justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+          >
+            <Icon name="i-ic:baseline-local-grocery-store" /> &nbsp; Add to cart
+          </NuxtLink>
         </div>
         <div v-show="expanded">
           <p class="flex items-center">
@@ -159,25 +172,38 @@
           </p>
 
           <p>Description: {{ product?.description }}</p>
+          <NuxtLink
+            href="#"
+            class="flex mt-5 w-[10rem] items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+          >
+            <Icon name="i-ic:baseline-local-grocery-store" /> &nbsp; Add to cart
+          </NuxtLink>
         </div>
         <button @click="toggleExpanded" class="text-blue-500 mt-4">
           {{ expanded ? "View less" : "View more" }}
         </button>
       </div>
 
-      <div class="flex justify-between mt-5">
-        <NuxtLink
-          to="/"
-          class="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+      <div class="flex justify-between px-10 mt-5"></div>
+
+      <p class="mb-3 text-lg font-bold text-gray-700 dark:text-gray-400">
+        You can add your favorite item to your wish list and come back to it
+        later. Maybe the price becomes more affordable, maybe you want to see
+        the details of the item again.
+      </p>
+
+      <div class="flex justify-between mx-5">
+        <button
+          @click="wishListStore.addToWishList(product)"
+          class="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-[0.9rem] font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
         >
-          <Icon name="i-ic:baseline-keyboard-arrow-left" /> &nbsp; Back to
-          Catalog
-        </NuxtLink>
+          <Icon name="i-heroicons-solid:heart" /> &nbsp; Add to wish list
+        </button>
         <NuxtLink
-          href="#"
-          class="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+          to="/wishlist"
+          class="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-[0.9rem] font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
         >
-          <Icon name="i-ic:baseline-local-grocery-store" /> &nbsp; Add to cart
+          <Icon name="i-heroicons-solid:heart" /> &nbsp; Go to wish list
         </NuxtLink>
       </div>
     </div>
@@ -187,30 +213,6 @@
     <div
       class="basis-[15%] p-2 mx-auto border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col justify-between"
     >
-      <div>
-        <p
-          class="mb-3 text-xl font-bold text-gray-700 dark:text-gray-400 leading-10"
-        >
-          You can add your favorite item to your wish list and come back to it
-          later. Maybe the price becomes more affordable, maybe you want to see
-          the details of the item again.
-        </p>
-
-        <div class="flex justify-between">
-          <button
-            @click="wishListStore.addToWishList(product)"
-            class="flex items-center justify-center rounded-md bg-slate-900 px-2 py-1 text-center text-[0.9rem] font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
-          >
-            <Icon name="i-heroicons-solid:heart" /> &nbsp; Add to wish list
-          </button>
-          <NuxtLink
-            to="/wishlist"
-            class="flex items-center justify-center rounded-md bg-slate-900 px-2 py-1 text-center text-[0.9rem] font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
-          >
-            <Icon name="i-heroicons-solid:heart" /> &nbsp; Go to wish list
-          </NuxtLink>
-        </div>
-      </div>
       <div class="flex flex-col">
         <ReviewsList v-if="product?.id" :productId="product.id" />
       </div>

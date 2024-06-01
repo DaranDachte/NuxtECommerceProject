@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h5 class="mt-5 text-2xl italic font-medium">Our customers reviews</h5>
+    <h5 class="text-2xl italic font-medium">Our customers reviews</h5>
     <div v-if="product" class="flex flex-col mt-5">
       <div
         v-for="review in (product as any).reviews"
