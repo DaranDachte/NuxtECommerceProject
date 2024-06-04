@@ -3,14 +3,18 @@
     class="relative m-5 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
   >
     <NuxtLink
-      :to="`/products/${product.id}`"
+      :to="`/products/${happyProduct?.id}`"
       class="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl :hover:"
     >
-      <img class="object-cover" :src="product.images[0]" :alt="product.name" />
+      <img
+        class="object-cover"
+        :src="happyProduct?.images[0]"
+        :alt="happyProduct?.title"
+      />
       <span
         class="absolute top-0 left-0 m-2 rounded-full bg-black px-2 text-center text-sm font-medium text-white"
       >
-        {{ Math.floor(product.discountPercentage) }}% OFF</span
+        {{ Math.floor(happyProduct?.discountPercentage ?? 0) }}% OFF</span
       >
       <div
         class="absolute top-0 left-0 w-full h-full flex items-center justify-center content-center text-white text-xl font-medium opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-50"
@@ -21,7 +25,7 @@
     <div class="mt-4 px-5 pb-5">
       <a href="#">
         <h5 class="text-2xl tracking-tight text-slate-900">
-          {{ product.brand }}
+          {{ happyProduct?.brand }}
         </h5>
       </a>
       <div>
@@ -30,33 +34,17 @@
             <p>
               Only
               <span class="text-3xl text-center font-bold text-slate-900">
-                {{ product.price }}€</span
+                {{ product?.price }}€</span
               >
             </p>
           </div>
-
-          <div class="flex items-center ml-2">
-            <!-- Здесь ваши svg-иконки -->
-            <span
-              class="mr-2 rounded bg-yellow-200 px-2.5 py-0.5 text-xs font-semibold"
-            >
-              ⭐ {{ product.rating }}
-            </span>
-          </div>
-        </div>
-        <div class="sm:mt-0 mb-2">
-          <span class="text-xl">Original price: </span>
-          <span class="text-sm text-slate-900 line-through"
-            >{{ calculateOriginalPrice }} €</span
-          >
         </div>
       </div>
       <div>
         <NuxtLink
-          href="#"
+          to="#"
           class="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
         >
-          <!-- Иконка -->
           <Icon name="i-ic:baseline-local-grocery-store" class="mr-2" />
           Add to cart
         </NuxtLink>
@@ -66,18 +54,47 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed } from "vue";
+import { useRoute } from "vue-router";
+import { useCategoriesStore } from "~/store/categoriesStore";
 
-const props = defineProps({
-  product: {
-    type: Object,
-    required: true,
-  },
-});
+const categoriesStore = useCategoriesStore();
 
-const calculateOriginalPrice = computed(() => {
-  return Math.round(
-    (1 + props.product.discountPercentage / 100) * props.product.price
-  );
+const happyProduct = ref<Product | null>(null);
+
+onMounted(() => {
+  happyProduct.value = categoriesStore.getRandomProduct();
 });
+console.log("this is happy product", happyProduct);
+
+const route = useRoute();
+const productId = route.params.id;
+
+interface Dimensions {
+  width: number;
+  height: number;
+  depth: number;
+}
+
+interface Product {
+  id: number;
+  title: string;
+  description: string;
+  category: string;
+  brand: string;
+  price: number;
+  rating: number;
+  discountPercentage: number;
+  stock: number;
+  images: string[];
+  thumbnail: string;
+  returnPolicy: string;
+  dimensions: Dimensions;
+  availabilityStatus: string;
+  minimumOrderQuantity: number;
+  shippingInformation: string;
+  weight: number;
+}
+const product: Product | undefined = categoriesStore.products.find(
+  (product: Product) => product.id === Number(productId)
+);
 </script>
