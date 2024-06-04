@@ -1,10 +1,11 @@
 <template>
   <div class="flex mt-1 gap-4 px-4 w-full">
     <!--   левая  колонка начало -->
+
     <div
       class="basis-[15%] p-4 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col"
     >
-      <p class="mb-3 text-lg font-bold text-gray-700 dark:text-gray-400">
+      <p class="mb-3 text-base font-bold text-gray-700 dark:text-gray-400">
         Our store offers thousands of products at an affordable price. You can
         find from us everything according to your taste. If you have any
         suggestions - how we can improve our work, or you have not found the
@@ -27,8 +28,11 @@
           Catalog
         </NuxtLink>
       </div>
+      <div class="flex flex-col mt-5 items-center">
+        <p class="text-center text-xl">Happy Product of day</p>
+        <HappyGood />
+      </div>
     </div>
-
     <!-- левая колонка конец -->
 
     <!-- центральная колонка начало -->

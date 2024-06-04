@@ -45,8 +45,22 @@ export const useCategoriesStore = defineStore("categoriesStore", () => {
     activeCategory.value = categorySlug;
     await fetchProductsByCategory(categorySlug);
   };
+  const getRandomProduct = () => {
+    if (products.value.length > 0) {
+      const randomIndex = Math.floor(Math.random() * products.value.length);
+      return products.value[randomIndex];
+    }
+    return null;
+  };
 
   fetchCategories();
 
-  return { categories, activeCategory, products, error, onCategoryClick };
+  return {
+    categories,
+    activeCategory,
+    products,
+    error,
+    onCategoryClick,
+    getRandomProduct,
+  };
 });
