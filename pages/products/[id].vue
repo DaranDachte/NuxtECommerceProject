@@ -220,7 +220,12 @@
       <div class="flex flex-col">
         <ReviewsList v-if="product?.id" :productId="product.id" />
       </div>
+      <div class="h-[20rem] w-full">
+        <GiffRoulette />
+        <!-- <img src="../../static/gifs/gif1.gif" /> -->
+      </div>
     </div>
+
     <!--   правая колонка конец -->
   </div>
   <div class="relative">
