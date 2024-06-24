@@ -92,12 +92,12 @@
             />&nbsp;Product Name:
             {{ product?.brand }}
           </p>
-          <NuxtLink
-            href="#"
+          <button
+            @click="basketStore.addToBasket(product)"
             class="flex items-center w-[10rem] mt-5 justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
           >
             <Icon name="i-ic:baseline-local-grocery-store" /> &nbsp; Add to cart
-          </NuxtLink>
+          </button>
         </div>
         <div v-show="expanded">
           <p class="flex items-center">
@@ -176,12 +176,12 @@
           </p>
 
           <p>Description: {{ product?.description }}</p>
-          <NuxtLink
-            href="#"
+          <button
+            @click="basketStore.addToBasket(product)"
             class="flex mt-5 w-[10rem] items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
           >
             <Icon name="i-ic:baseline-local-grocery-store" /> &nbsp; Add to cart
-          </NuxtLink>
+          </button>
         </div>
         <button @click="toggleExpanded" class="text-blue-500 mt-4">
           {{ expanded ? "View less" : "View more" }}
@@ -235,15 +235,25 @@
       class="fixed top-[25%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[25rem] h-[5rem] bg-gradient-to-r from-red-200 to-red-600"
     />
   </div>
+  <div class="relative">
+    <UAlert
+      v-if="basketStore.showAlert"
+      description="You have already added this item to your basket."
+      title="Heads up!"
+      class="fixed top-[25%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[25rem] h-[5rem] bg-gradient-to-r from-red-200 to-red-600"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import { useCategoriesStore } from "../../store/categoriesStore";
 import { useWishListStore } from "../../store/wishListStore";
-
+import { useBasketStore } from "~/store/basketStore";
 const categoriesStore = useCategoriesStore();
 const wishListStore = useWishListStore();
+const basketStore = useBasketStore();
+
 const route = useRoute();
 const productId = route.params.id;
 const expanded = ref(false);
