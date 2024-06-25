@@ -8,7 +8,7 @@
         <div
           v-for="(product, index) in basketStore.basket"
           :key="product.id"
-          class="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start"
+          class="flex justify-between items-start mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start"
         >
           <img
             :src="product.images[0]"
@@ -17,15 +17,22 @@
           />
           <div class="sm:ml-4 sm:flex sm:w-full sm:justify-between">
             <div class="mt-5 sm:mt-0">
-              <h2 class="text-lg font-bold text-gray-900">Nike Air Max 2019</h2>
-              <p class="mt-1 text-xs text-gray-700">36EU - 4US</p>
+              <h2 class="text-lg font-bold text-gray-900">
+                {{ product.title }}
+              </h2>
+              <p class="mt-1 text-xs text-gray-700">
+                {{ product.description }}
+              </p>
+              <p class="mt-1 text-xs text-gray-700">
+                Category: {{ capitalizeFirstLetter(product?.category ?? "") }}
+              </p>
             </div>
             <div
               class="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6"
             >
               <div class="flex items-center border-gray-100">
                 <span
-                  @click="decreaseProduct()"
+                  @click="decreaseQuantity(product.id)"
                   class="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"
                 >
                   -
@@ -33,20 +40,18 @@
                 <input
                   class="h-8 w-8 border bg-white text-center text-xs outline-none"
                   type="number"
-                  value="{{"
-                  product
-                  }}
+                  v-model.number="quantities[product.id]"
                   min="1"
                 />
                 <span
-                  @click="increaseProduct()"
+                  @click="increaseQuantity(product.id)"
                   class="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"
                 >
                   +
                 </span>
               </div>
               <div class="flex items-center space-x-4">
-                <p class="text-sm">{{}} Euro</p>
+                <p class="text-sm">{{ product.price }} Euro</p>
                 <Icon
                   name="i-ic:sharp-delete-forever"
                   class="h-5 w-5 cursor-pointer duration-150 hover:text-red-500"
@@ -63,17 +68,17 @@
       >
         <div class="mb-2 flex justify-between">
           <p class="text-gray-700">Subtotal</p>
-          <p class="text-gray-700">$129.99</p>
+          <p class="text-gray-700">{{ subtotal }} Euro</p>
         </div>
         <div class="flex justify-between">
           <p class="text-gray-700">Shipping</p>
-          <p class="text-gray-700">$4.99</p>
+          <p class="text-gray-700">4.99 Euro</p>
         </div>
         <hr class="my-4" />
         <div class="flex justify-between">
           <p class="text-lg font-bold">Total</p>
           <div class="">
-            <p class="mb-1 text-lg font-bold">$134.98 USD</p>
+            <p class="mb-1 text-lg font-bold">{{ total }} Euro</p>
             <p class="text-sm text-gray-700">including VAT</p>
           </div>
         </div>
@@ -88,37 +93,53 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import { useBasketStore } from "~/store/basketStore";
+
 const basketStore = useBasketStore();
-
-interface Product {
-  id: number;
-  title: string;
-  description: string;
-  category: string;
-  brand: string;
-  price: number;
-  rating: number;
-  discountPercentage: number;
-  stock: number;
-  images: string[];
-  thumbnail: string;
-}
-
-const product: Product | undefined = basketStore.basket.find(
-  (product: Product) => product.id === Number(product)
-);
-
-const increaseProduct = (item: Product) => {};
 
 const basketMessage = computed(() => {
   const basketLength = basketStore.basket.length;
   if (basketLength === 0) {
     return "Your basket is empty";
   } else if (basketLength === 1) {
-    return "You have 1 item on your basket";
+    return "You have 1 item in your basket";
   } else {
-    return `You have ${basketLength} items on your wishlist`;
+    return `You have ${basketLength} items in your basket`;
   }
 });
+
+const quantities = ref<{ [key: string]: number }>({});
+basketStore.basket.forEach((product) => {
+  if (!quantities.value[product.id]) {
+    quantities.value[product.id] = 1; // Default quantity
+  }
+});
+
+const subtotal = computed(() => {
+  return basketStore.basket.reduce(
+    (sum, product) => sum + product.price * product.quantity,
+    0
+  );
+});
+
+const total = computed(() => {
+  const shipping = 4.99;
+  return subtotal.value + shipping;
+});
+
+const increaseQuantity = (productId: string | number) => {
+  quantities.value[productId]++;
+
+  console.log(increaseQuantity);
+};
+
+const decreaseQuantity = (productId: string | number) => {
+  if (quantities.value[productId] > 1) {
+    quantities.value[productId]--;
+  }
+};
+const capitalizeFirstLetter = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
 </script>

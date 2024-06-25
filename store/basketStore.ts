@@ -19,6 +19,7 @@ export const useBasketStore = defineStore("basketStore", () => {
         showAlert.value = false;
       }, 5000);
     }
+    console.log("Current basket:", basket.value);
   };
 
   return {
