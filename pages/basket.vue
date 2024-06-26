@@ -27,9 +27,7 @@
                 Category: {{ capitalizeFirstLetter(product?.category ?? "") }}
               </p>
             </div>
-            <div
-              class="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6"
-            >
+            <div class="flex justify-between flex-col">
               <div class="flex items-center border-gray-100">
                 <span
                   @click="decreaseQuantity(product.id)"
@@ -37,12 +35,11 @@
                 >
                   -
                 </span>
-                <input
-                  class="h-8 w-8 border bg-white text-center text-xs outline-none"
-                  type="number"
-                  v-model.number="quantities[product.id]"
-                  min="1"
-                />
+                <p
+                  class="h-8 w-8 border flex items-center justify-center bg-white text-center text-xs outline-none"
+                >
+                  {{ quantities[product.id] }}
+                </p>
                 <span
                   @click="increaseQuantity(product.id)"
                   class="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"
@@ -50,8 +47,10 @@
                   +
                 </span>
               </div>
-              <div class="flex items-center space-x-4">
+
+              <div class="flex items-center justify-between w-full">
                 <p class="text-sm">{{ product.price }} Euro</p>
+
                 <Icon
                   name="i-ic:sharp-delete-forever"
                   class="h-5 w-5 cursor-pointer duration-150 hover:text-red-500"
@@ -68,11 +67,11 @@
       >
         <div class="mb-2 flex justify-between">
           <p class="text-gray-700">Subtotal</p>
-          <p class="text-gray-700">{{ subtotal }} Euro</p>
+          <p class="text-gray-700">{{ quantityPrice.toFixed(2) }} Euro</p>
         </div>
         <div class="flex justify-between">
           <p class="text-gray-700">Shipping</p>
-          <p class="text-gray-700">4.99 Euro</p>
+          <p class="text-gray-700">6 Euro</p>
         </div>
         <hr class="my-4" />
         <div class="flex justify-between">
@@ -116,6 +115,12 @@ basketStore.basket.forEach((product) => {
   }
 });
 
+const quantityPrice = computed(() => {
+  return basketStore.basket.reduce((total, product) => {
+    const quantity = quantities.value[product.id] || 1;
+    return total + product.price * quantity;
+  }, 0);
+});
 const subtotal = computed(() => {
   return basketStore.basket.reduce(
     (sum, product) => sum + product.price * product.quantity,
@@ -124,8 +129,13 @@ const subtotal = computed(() => {
 });
 
 const total = computed(() => {
-  const shipping = 4.99;
-  return subtotal.value + shipping;
+  const shipping = 6;
+  const subtotalValue = subtotal.value; // Получаем текущее значение subtotal
+
+  if (isNaN(subtotalValue)) {
+    return NaN; // Если subtotalValue NaN, вернуть NaN в total
+  }
+  return subtotalValue + shipping;
 });
 
 const increaseQuantity = (productId: string | number) => {
