@@ -77,7 +77,7 @@
         <div class="flex justify-between">
           <p class="text-lg font-bold">Total</p>
           <div class="">
-            <p class="mb-1 text-lg font-bold">{{ total }} Euro</p>
+            <p class="mb-1 text-lg font-bold">{{ total.toFixed(2) }} Euro</p>
             <p class="text-sm text-gray-700">including VAT</p>
           </div>
         </div>
@@ -92,7 +92,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { reactive, computed } from "vue";
 import { useBasketStore } from "~/store/basketStore";
 
 const basketStore = useBasketStore();
@@ -121,21 +121,18 @@ const quantityPrice = computed(() => {
     return total + product.price * quantity;
   }, 0);
 });
-const subtotal = computed(() => {
-  return basketStore.basket.reduce(
-    (sum, product) => sum + product.price * product.quantity,
+const subtotal = ref(0);
+
+const calculateSubtotal = () => {
+  subtotal.value = basketStore.basket.reduce(
+    (sum, product) => sum + product.price * quantities.value[product.id],
     0
   );
-});
+};
 
 const total = computed(() => {
-  const shipping = 6;
-  const subtotalValue = subtotal.value; // Получаем текущее значение subtotal
-
-  if (isNaN(subtotalValue)) {
-    return NaN; // Если subtotalValue NaN, вернуть NaN в total
-  }
-  return subtotalValue + shipping;
+  calculateSubtotal();
+  return subtotal.value ? subtotal.value + 6 : 0;
 });
 
 const increaseQuantity = (productId: string | number) => {
@@ -149,6 +146,7 @@ const decreaseQuantity = (productId: string | number) => {
     quantities.value[productId]--;
   }
 };
+
 const capitalizeFirstLetter = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
