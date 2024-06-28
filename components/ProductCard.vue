@@ -52,22 +52,31 @@
         </div>
       </div>
       <div>
-        <NuxtLink
-          href="#"
-          class="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+        <button
+          class="flex w-full items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+          @click="basketStore.addToBasket(product)"
         >
-          <!-- Иконка -->
           <Icon name="i-ic:baseline-local-grocery-store" class="mr-2" />
           Add to cart
-        </NuxtLink>
+        </button>
       </div>
     </div>
+  </div>
+  <div class="relative">
+    <UAlert
+      v-if="basketStore.showAlert"
+      description="You have already added this item to your basket."
+      title="Heads up!"
+      class="fixed top-[25%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[25rem] h-[5rem] bg-gradient-to-r from-red-200 to-red-600"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { defineProps, computed } from "vue";
+import { useBasketStore } from "~/store/basketStore";
 
+const basketStore = useBasketStore();
 const props = defineProps({
   product: {
     type: Object,
