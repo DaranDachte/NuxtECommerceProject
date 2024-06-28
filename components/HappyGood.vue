@@ -41,13 +41,13 @@
         </div>
       </div>
       <div>
-        <NuxtLink
-          to="#"
-          class="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+        <button
+          class="flex items-center justify-center w-full rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+          @click="basketStore.addToBasket(product)"
         >
           <Icon name="i-ic:baseline-local-grocery-store" class="mr-2" />
           Add to cart
-        </NuxtLink>
+        </button>
       </div>
     </div>
   </div>
@@ -56,9 +56,9 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import { useCategoriesStore } from "~/store/categoriesStore";
-
+import { useBasketStore } from "~/store/basketStore";
 const categoriesStore = useCategoriesStore();
-
+const basketStore = useBasketStore();
 const happyProduct = ref<Product | null>(null);
 
 onMounted(() => {

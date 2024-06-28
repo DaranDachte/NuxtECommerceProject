@@ -41,7 +41,7 @@
                 <Icon
                   name="i-heroicons-shopping-cart"
                   class="h-5 w-5 cursor-pointer duration-150 hover:text-red-500"
-                  @click=""
+                  @click="basketStore.addToBasket(product)"
                 />
               </div>
             </div>
@@ -50,15 +50,25 @@
       </div>
     </div>
   </div>
+  <div class="relative">
+    <UAlert
+      v-if="basketStore.showAlert"
+      description="You have already added this item to your basket."
+      title="Heads up!"
+      class="fixed top-[25%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[25rem] h-[5rem] bg-gradient-to-r from-red-200 to-red-600"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
 import { useWishListStore } from "../store/wishListStore";
+import { useBasketStore } from "~/store/basketStore";
 import { useRoute } from "vue-router";
 const route = useRoute();
 const productId = route.params.id;
 
 const wishListStore = useWishListStore();
+const basketStore = useBasketStore();
 
 interface Product {
   id: number;
@@ -76,6 +86,8 @@ interface Product {
 
 console.log("wishListStore:", wishListStore);
 console.log("wishListStore.wishList:", wishListStore.wishList);
+
+console.log("basketStore.addtoBasket:", basketStore.addToBasket);
 
 // Получаем информацию о продукте из стора по его ID
 const product: Product | undefined = wishListStore.wishList.find(

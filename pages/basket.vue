@@ -121,6 +121,7 @@ const quantityPrice = computed(() => {
     return total + product.price * quantity;
   }, 0);
 });
+
 const subtotal = ref(0);
 
 const calculateSubtotal = () => {
