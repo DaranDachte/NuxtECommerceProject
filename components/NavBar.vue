@@ -33,6 +33,20 @@
           Contact
         </NuxtLink>
       </div>
+      <div class="relative hidden md:block mr-20">
+        <div
+          class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+        >
+          <Icon name="ic:baseline-search" />
+        </div>
+        <input
+          type="text"
+          id="search-navbar"
+          class="block w-full p-[5px] ps-10 text-sm outline-none text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="Search..."
+        />
+      </div>
+
       <NuxtLink
         to="/wishlist"
         class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
